@@ -1,9 +1,35 @@
-<mxfile host="app.diagrams.net" modified="2023-12-31T17:09:03.637Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" version="22.1.16" etag="AfUNNgzkoEPLZ0mqN2pa" type="github">
+<mxfile host="app.diagrams.net" modified="2023-12-31T17:11:06.617Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="WT9PcIq3yvVcGo3K4uFn" version="22.1.16" type="github">
   <diagram name="Page-1" id="kxNCET3wKZughwCFv8Sz">
-    <mxGraphModel>
+    <mxGraphModel dx="1434" dy="833" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="4681" pageHeight="3300" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="_pBkUwRdFLSaeBpOlsYY-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="_pBkUwRdFLSaeBpOlsYY-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_pBkUwRdFLSaeBpOlsYY-1" value="Get Video" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="220" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="_pBkUwRdFLSaeBpOlsYY-4" value="" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="117.5" width="390" height="265" as="geometry" />
+        </mxCell>
+        <mxCell id="_pBkUwRdFLSaeBpOlsYY-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="_pBkUwRdFLSaeBpOlsYY-5" target="_pBkUwRdFLSaeBpOlsYY-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_pBkUwRdFLSaeBpOlsYY-5" value="Convert to Gray" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="410" y="180" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="_pBkUwRdFLSaeBpOlsYY-9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="_pBkUwRdFLSaeBpOlsYY-6" target="_pBkUwRdFLSaeBpOlsYY-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="_pBkUwRdFLSaeBpOlsYY-6" value="Canny Edge Detector" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="180" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="_pBkUwRdFLSaeBpOlsYY-8" value="Hough Lines" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="515" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
