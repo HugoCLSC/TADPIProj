@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"name": "Advanced Image Processing Project",
+			"path": "."
+		}
+	],
+	"settings": {
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#584fff",
+			"activityBar.background": "#584fff",
+			"activityBar.foreground": "#e7e7e7",
+			"activityBar.inactiveForeground": "#e7e7e799",
+			"activityBarBadge.background": "#800700",
+			"activityBarBadge.foreground": "#e7e7e7",
+			"commandCenter.border": "#e7e7e799",
+			"sash.hoverBorder": "#584fff",
+			"statusBar.background": "#281cff",
+			"statusBar.foreground": "#e7e7e7",
+			"statusBarItem.hoverBackground": "#584fff",
+			"statusBarItem.remoteBackground": "#281cff",
+			"statusBarItem.remoteForeground": "#e7e7e7",
+			"titleBar.activeBackground": "#281cff",
+			"titleBar.activeForeground": "#e7e7e7",
+			"titleBar.inactiveBackground": "#281cff99",
+			"titleBar.inactiveForeground": "#e7e7e799"
+		},
+		"peacock.color": "#281cff"
+	}
+}
