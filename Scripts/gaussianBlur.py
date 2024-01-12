@@ -71,10 +71,8 @@ class GaussBlur():
         # ! The Image is processed but it comes out black and white. 
         try:
             # * Convert Image to BGRA
-            imageBGRA = cv.cvtColor(image, cv.COLOR_BGR2BGRA)
-            # imageBGRA = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-            
-            # imgCopy = imageBGRA.copy()
+            imageBGRA = cv.cvtColor(image,  cv.COLOR_BGR2BGRA)
+
 
             # * Get image Properties
             height = imageBGRA.shape[0]
@@ -95,7 +93,6 @@ class GaussBlur():
             maskBuffer = cl.Buffer(
                 ctx,
                 flags=cl.mem_flags.COPY_HOST_PTR | cl.mem_flags.READ_ONLY,
-                # hostbuf = arrayMask
                 hostbuf=self.gaussian_kernel
             )
 
@@ -147,7 +144,7 @@ class GaussBlur():
                 src=imageOut,
                 origin=(0, 0, 0),
                 region=(imageBGRA.shape[1], imageBGRA.shape[0]),
-                # is_blocking=True
+                is_blocking=True
             )
            
             maskBuffer.release()

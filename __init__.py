@@ -1,9 +1,12 @@
 #!/bin/bash
-import imageio
-import cv2 as cv
+import math
 import os
 import sys
+
+import cv2 as cv
+import imageio
 import numpy as np
+from scipy import ndimage
 
 CURRENT_WORKING_DIRECTORY = os.getcwd()
 VIDEO_PATHNAME = "\\Videos\\"
@@ -15,17 +18,13 @@ print(CURRENT_WORKING_DIRECTORY)
 sys.path.append(CURRENT_WORKING_DIRECTORY + VIDEO_PATHNAME)
 sys.path.append(CURRENT_WORKING_DIRECTORY + SCRIPTS_PATHNAME)
 
-from Scripts.gaussianBlur import GaussBlur
-import Scripts.hough as hg
 import Scripts.imageForms as iF
-from Scripts.sobel import Sobel
-from Scripts.gradient import Gradient
-from Scripts.NonMaxSuppression import NonMaxSuppression
 from Scripts.doubleThresholding import DoubleThresholding
-from Scripts.valueMax import ImageMaxValue
-
-from scipy import ndimage
-
+from Scripts.gaussianBlur import GaussBlur
+from Scripts.gradient import Gradient
+from Scripts.hough import HoughTransform
+from Scripts.NonMaxSuppression import NonMaxSuppression
+from Scripts.sobel import Sobel
 
 
 if __name__ == "__main__":
@@ -33,24 +32,16 @@ if __name__ == "__main__":
     # TODO : Get a list of the files in the Videos Directory so i can turn this
     # TODO:  automatic and not write each file.
     # * Get the videos or images.
-    FILENAME = "video-short(1).mp4"
+    FILENAME = "video-short(2).mp4"
     ImageFILENAME = "aula4-2.bmp"
+    # ghouhFILENAME = "houghtest.bmp"
+    # ghouhFILENAME = "aula4-3.bmp"
     # ImageFILENAME = "peppers.jpg"
     # hg.ShowVideo(CURRENT_WORKING_DIRECTORY + VIDEO_PATHNAME + FILENAME)
     # test = gb.setup()
 
-    image = cv.imread(CURRENT_WORKING_DIRECTORY +
-                      IMAGES_PATHNAME + ImageFILENAME)
-    
-    # cv.imshow("original", image)
-    # cv.waitKey(0 )
-    # cv.imshow("window", videoGauss.resultImage)
-    # cv.waitKey(0
-    # cv.imshow("sks    ", videoSobel.resultImage)
-    # cv.waitKey(0)
-    # cv.destroyAllWindows()
-    im = image.copy()
-    # ! USE THE RED CHANNEL FOR BETTER PROCESSING OF EDGES AND ALL.
+    # image = cv.imread(CURRENT_WORKING_DIRECTORY +
+    #                   IMAGES_PATHNAME + ImageFILENAME)
     # * Compare with sobel
     # imd = cv.cvtColor(im, cv.COLOR_BGR2BGRA)
     # sobbelx = cv.Sobel(im, cv.CV_64F,1,0, ksize=3)
@@ -59,47 +50,58 @@ if __name__ == "__main__":
     # grad_norm = (grad * 255 / grad.max()).astype(np.uint8)
     # cv.imshow('s', grad_norm)
     # #####
-    # * Initialize GPU calculated Filters and edge detection classes 
+    # * Initialize GPU calculated Filters and edge detection classes
     GaussFilter = GaussBlur(1.4)
     GradientFilter = Gradient()
     MaxSup = NonMaxSuppression()
     doublt = DoubleThresholding()
-    maxValue = ImageMaxValue()
+    # * Region of interest 
+  
+    hough = HoughTransform( minimumAngle=0,
+       maximumAngle=180, angleSpacing=1, threshold=1.9)
     # gaussImage = GaussFilter.GPUCalc(image)
     # gradientImage, theta = GradientFilter.GPUCalc(gaussImage)
-    # maxSupImage =  MaxSup.GPUCalc(gradientImage, theta)
-    # doubleT = doublt.GPUCalc(maxSupImage, 0.2,0.7)
-    # 0.2 .6
-    # cv.imshow("Gauss", gaussImage)
-    # cv.imshow("gradient", gradientImage)
-    # cv.imshow("MaxSup", maxSupImage)
-    # cv.imshow("Double Threshold", doubleT)
-    # cv.imshow("difference ", maxSupImage - doubleT)
+    # maxSupImage = MaxSup.GPUCalc(gradientImage, theta)
+    # doubleT = doublt.GPUCalc(maxSupImage, 0.6, 0.3)
+    # houghC = hough.GPUCalc(doubleT)
     
-
-    # cv.imshow("Double Thresh and Hysteresis", doubleT)
-    # cv.imshow("Double Thresh and Hysteresis Diff",maxSupImage - doubleT)
+    # cv.imshow("Hough", houghC)
     # cv.waitKey(0)
+    
+    # @ Video handling
     vidCap = cv.VideoCapture(
         CURRENT_WORKING_DIRECTORY + VIDEO_PATHNAME + FILENAME)
     while True:
         ret, vidFrame = vidCap.read()
+
         if not ret:
             break
-        # videoGray = cv.cvtColor(vidFrame, cv.COLOR_BGR2GRAY)
+        # value_channel = videoGray[:,:,2]
         # * Process images in the filters
-    
-        videoGauss = GaussFilter.GPUCalc(vidFrame)
-        # VideoSobel = SobelFilter.GPUCalc(videoGauss)
+        # frameCopy = cv.resize(vidFrame, (vidFrame.shape[1]*0.30, vidFrame.shape[0]*0.30, 4), interpolation=cv.INTER_AREA)
+        # pt1 = (vidFrame.shape[1]*0.30, vidFrame.shape[0]*0.30)
+        # pt2 = (vidFrame.shape[1] - vidFrame.shape[1]*0.80,
+        #        vidFrame.shape[0] - vidFrame.shape[0]*0.80)
+        # print(pt2)
+
+        # exit()
+        # frameCopy = cv.rectangle(vidFrame.copy(),pt1,pt2,(255,0,0),2)
+        # cv.se
+        videoGauss = GaussFilter.GPUCalc(vidFrame.copy())
         videoGrad, thetas = GradientFilter.GPUCalc(videoGauss)
         videonon = MaxSup.GPUCalc(videoGrad, thetas)
-        videoT = doublt.GPUCalc(videonon, 0.4,0.8)
-        # print(type(videoGauss.resultImage))
-        # videoCanny = cv.Sobel(videoGray, cv.CV_8U, 2, 0)
-        # videoGauss = gb.GPUCalc(videoGray, platform, device, ctx, commQ, prog,[[
-        #                         1, 2, 1], [2, 4, 2], [1, 2, 1]], 9)
+        videoT = doublt.GPUCalc(videonon, 0.6, 0.2)
+  
+        # blank = np.zeros_like(videoT)
+        # roi = np.array((videoT.shape[1] - videoT.shape[1]*0.80,
+        #             videoT.shape[0] - videoT.shape[0]*0.80,4), dtype=np.int32)
+        # roiP = cv.fillPoly(blank, roi, 255)
+        # roiImage = cv.bitwise_and(videoT, roiP)
 
-        cv.imshow("Video", videoT)
+  
+        videoHough, lines = hough.GPUCalc(videoT)
+        for pos1, pos2 in lines:
+            cv.line(vidFrame, pos1, pos2,(0,0,255), 1, cv.LINE_AA)
+        cv.imshow("Video", vidFrame )
         if cv.waitKey(20) >= 0:
             break
-
